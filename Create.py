@@ -20,8 +20,8 @@ def create(create_js):
 def input_content():
     Config.title = input("请输入标题：")
     Config.describe = input("请输入描述：")
-    Config.Browser.find_element(By.CSS_SELECTOR, ".c-input_inner").send_keys(Config.title)
-    Config.Browser.find_element(By.CSS_SELECTOR, "#post-textarea").send_keys(Config.describe)
+    Config.Browser.find_element(By.CSS_SELECTOR, ".c-input_inner > div:nth-child(1) > input:nth-child(1)").send_keys(Config.title)
+    Config.Browser.find_element(By.CSS_SELECTOR, "#quillEditor > div:nth-child(1)").send_keys(Config.describe)
 
 
 def get_video():
@@ -96,13 +96,21 @@ def get_image():
 def create_image():
     path_image = get_image()
     try:
-        WebDriverWait(Config.Browser, 10, 0.2).until(
-            lambda x: x.find_element(By.CSS_SELECTOR, "div.tab:nth-child(2)")).click()
+        # WebDriverWait(Config.Browser, 10, 0.2).until(
+        #     lambda x: x.find_element(By.CSS_SELECTOR, "div.creator-tab:nth-child(2)")).click()
+
+        # 点击图片上传tab
+        # Config.Browser.find_element(By.CSS_SELECTOR, "div.creator-tab:nth-child(2)").click()
+
+        # 通过js点击按钮，跳过虚拟定位
+        Config.Browser.execute_script('document.querySelector("div.creator-tab:nth-child(2)").click()')
     except TimeoutException:
         print("网页好像加载失败了！请重试！")
+        return
+
     #  上传图片
     Config.Browser.find_element(By.CSS_SELECTOR, ".upload-wrapper > div:nth-child(1) > input:nth-child(1)").send_keys(
         path_image)
     input_content()
 
-    create("button.css-k3hpu2:nth-child(1)")
+    create(".publishBtn")

@@ -60,19 +60,23 @@ def login():
         if len(phone) == 11:
             break
         print("手机号码不合法！")
-    input_phone = f'return document.querySelector(".css-1hguu2q")'
+    input_phone = 'return document.querySelector(".css-10yx1q0")'
     Config.Browser.execute_script(input_phone).send_keys(phone)
 
     # 发送验证码
-    Config.Browser.find_element(By.CSS_SELECTOR,
-                                'div.css-14tu84b:nth-child(1) > div:nth-child(2) > div:nth-child(3)').click()
+    # Config.Browser.find_element(By.CSS_SELECTOR,
+    #                             'div.css-14tu84b:nth-child(1) > div:nth-child(2) > div:nth-child(3)').click()
+
+    Config.Browser.execute_script('return document.querySelector(".css-uyobdj")').click()
+    # Config.Browser.find_element(By.CSS_SELECTOR, 'div.css-1vfl29').click()
 
     # 获取错误标签
     error_span = 'return document.querySelector(".css-1qf7tqh").value'
     error = Config.Browser.execute_script(error_span)
-    if error != "":
-        print(error)
-        return
+    if error is not None:
+        if error != "":
+            print(error)
+            return
 
     while True:
         # 输入验证码
@@ -81,13 +85,11 @@ def login():
             break
         print("验证码不合法！")
 
-    code_input = 'return document.querySelector("#page > div > div.content > div.con > div.login-box-container > div ' \
-                 '> div > div > div > div:nth-child(2) > div.css-6oq7i4 > div:nth-child(1) > div:nth-child(2) > input")'
+    code_input = 'return document.querySelector(".css-1ge5flv")'
     Config.Browser.execute_script(code_input).send_keys(code)
 
     # 登录
-    login_btn = 'return document.querySelector("#page > div > div.content > div.con > div.login-box-container > div > ' \
-                'div > div > div > div:nth-child(2) > button")'
+    login_btn = 'return document.querySelector(".beer-login-btn")'
     Config.Browser.execute_script(login_btn).click()
     login_successful()
 
